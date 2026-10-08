@@ -40,7 +40,7 @@ Status: DONE
 Objective: Kaggle/Linux + REAL TorchQuantum
 Entry condition: Code base stable, federated implemented
 Exit condition: Execution verified on Linux with real quantum backend
-Status: NEXT
+Status: FAIL
 
 ## PHASE 8
 Objective: Baseline QFRL training
@@ -52,7 +52,7 @@ Status: NEXT
 Objective: Baseline evaluation
 Entry condition: Training complete
 Exit condition: Baseline results plotted and documented
-Status: NEXT
+Status: LATER
 
 ## PHASE 10
 Objective: Highway environment modification

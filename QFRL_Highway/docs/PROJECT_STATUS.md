@@ -8,7 +8,7 @@ Stage 5: COMPLETE
 Stage 6A: COMPLETE
 Stage 6B.1: COMPLETE
 Stage 6B.2: COMPLETE
-Kaggle REAL TORCHQUANTUM: NOT STARTED
+Stage 7 (Real TorchQuantum Validation): FAIL
 Baseline TRAINING: NOT STARTED
 Highway experiment: NOT STARTED
 
@@ -33,11 +33,12 @@ WHAT IS MOCKED
 WHAT IS UNKNOWN
 - Convergence speed of the QFRL agent on the real TorchQuantum simulator
 - Scalability to 30 clients via FedAvg in real quantum contexts
+- Real quantum gradient propagation characteristics
 
 CURRENT BLOCKERS
-- Real TorchQuantum not available on Windows (requires Kaggle/Linux).
+- Real TorchQuantum fundamentally fails to install on Windows due to the `pyscf` C++/Fortran compilation dependency.
 
 NEXT 3 ACTIONS
-1. Transition to Kaggle/Linux for REAL TorchQuantum execution (Phase 7)
+1. FIX REAL TORCHQUANTUM BACKEND (Transition to Kaggle/Linux)
 2. Baseline QFRL training (Phase 8)
 3. Baseline evaluation (Phase 9)

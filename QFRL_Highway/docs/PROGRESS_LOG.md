@@ -17,3 +17,12 @@
 **RESULT**: COMPLETE
 **OPEN ISSUES**: TorchQuantum real execution still mocked.
 **NEXT STEP**: Kaggle/Linux real TorchQuantum validation.
+
+## 2026-10-08
+**STAGE**: 7
+**ACTION**: Kaggle/Linux real TorchQuantum validation attempt
+**FILES CHANGED**: STAGE7_REAL_TORCHQUANTUM_VALIDATION.md, experiments/kaggle_stage7_real_torchquantum.py
+**TESTS**: Real TorchQuantum backend install
+**RESULT**: FAIL
+**OPEN ISSUES**: torchquantum pip installation fails on Windows due to pyscf compilation dependency.
+**NEXT STEP**: Fix Real TorchQuantum Backend (Move to Kaggle/Linux).
