@@ -22,19 +22,19 @@ Status: DONE
 Objective: Single-client QFRL
 Entry condition: RL formulation complete
 Exit condition: Agent running in environment
-Status: PARTIALLY VERIFIED
+Status: DONE
 
 ## PHASE 5
 Objective: Physical audit
 Entry condition: Single-client QFRL running
 Exit condition: Physical and power formulas validated
-Status: CURRENT
+Status: DONE
 
 ## PHASE 6
 Objective: FedAvg
 Entry condition: Single-client verified
 Exit condition: Multi-agent federated averaging implemented
-Status: NEXT
+Status: DONE
 
 ## PHASE 7
 Objective: Kaggle/Linux + REAL TorchQuantum
