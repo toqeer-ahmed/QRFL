@@ -18,17 +18,34 @@ irs:
   # Values remain unspecified by the paper at this stage
 
 tasks:
-  # Values remain unspecified by the paper at this stage
+  # The following parameters are REQUIRED for execution but UNSPECIFIED by the paper:
+  input_bits: 1048576 # 1 Mb TODO: UNSPECIFIED_IN_PAPER
+  cycles_per_bit: 1000 # TODO: UNSPECIFIED_IN_PAPER
+
+computation:
+  # The following parameters are REQUIRED for execution but UNSPECIFIED by the paper:
+  kappa: 1.0e-28 # Effective switched capacitance TODO: UNSPECIFIED_IN_PAPER
 
 communication:
   noise_power_dbm: -120 # Provided in the paper explicitly
   
   # The following parameters are REQUIRED for execution but UNSPECIFIED by the paper:
-  beta_1: 0.001 # TODO: UNSPECIFIED
-  beta_2: 2.2 # TODO: UNSPECIFIED
-  beta_3: 2.2 # TODO: UNSPECIFIED
-  beta_4: 2.5 # TODO: UNSPECIFIED
-  K_rician: 10.0 # TODO: UNSPECIFIED
-  wavelength_m: 0.1 # TODO: UNSPECIFIED
-  irs_element_spacing_m: 0.05 # TODO: UNSPECIFIED
-  bandwidth_hz: 1000000.0 # TODO: UNSPECIFIED
+  beta_1: 0.001 # TODO: UNSPECIFIED_IN_PAPER
+  beta_2: 2.2 # TODO: UNSPECIFIED_IN_PAPER
+  beta_3: 2.2 # TODO: UNSPECIFIED_IN_PAPER
+  beta_4: 2.5 # TODO: UNSPECIFIED_IN_PAPER
+  K_rician: 10.0 # TODO: UNSPECIFIED_IN_PAPER
+  wavelength_m: 0.1 # TODO: UNSPECIFIED_IN_PAPER
+  irs_element_spacing_m: 0.05 # TODO: UNSPECIFIED_IN_PAPER
+  bandwidth_hz: 1000000.0 # TODO: UNSPECIFIED_IN_PAPER
+
+rl:
+  state_dim: 150 # Provided in the paper explicitly
+  action_dim: 5 # Provided in the paper explicitly
+  replay_buffer_size: 6000 # Provided in the paper explicitly
+  batch_size: 32 # Provided in the paper explicitly
+  episode_length: 5000 # Provided in the paper explicitly
+  gamma: 0.95 # Provided in the paper explicitly
+  actor_learning_rate: 0.001 # Provided in the paper explicitly
+  critic_learning_rate: 0.0025 # Provided in the paper explicitly
+  training_epochs: 8000 # Provided in the paper explicitly

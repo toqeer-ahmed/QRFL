@@ -1,2 +1,5 @@
+torch==2.5.1
+torchquantum==0.1.7
 numpy
-PyYAML
+pyyaml
+pytest
