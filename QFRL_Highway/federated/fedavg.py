@@ -37,18 +37,24 @@ def fedavg(client_states):
     aggregated_critic = {}
     
     for k in base_actor_keys:
-        # We ensure float32 accumulation to prevent type issues
-        weighted_sum = torch.zeros_like(client_states[0]['params']['actor'][k], dtype=torch.float32)
-        for i, cs in enumerate(client_states):
-            weighted_sum += cs['params']['actor'][k].float() * weights[i]
-        # Cast back to original type (e.g., int64 for num_batches_tracked) if necessary
-        aggregated_actor[k] = weighted_sum.to(client_states[0]['params']['actor'][k].dtype)
+        sample_tensor = client_states[0]['params']['actor'][k]
+        if sample_tensor.is_complex():
+            weighted_sum = torch.zeros_like(sample_tensor)
+            for i, cs in enumerate(client_states):
+                weighted_sum += cs['params']['actor'][k] * weights[i]
+            aggregated_actor[k] = weighted_sum
+        else:
+            weighted_sum = torch.zeros_like(sample_tensor, dtype=torch.float32)
+            for i, cs in enumerate(client_states):
+                weighted_sum += cs['params']['actor'][k].float() * weights[i]
+            aggregated_actor[k] = weighted_sum.to(sample_tensor.dtype)
         
     for k in base_critic_keys:
-        weighted_sum = torch.zeros_like(client_states[0]['params']['critic'][k], dtype=torch.float32)
+        sample_tensor = client_states[0]['params']['critic'][k]
+        weighted_sum = torch.zeros_like(sample_tensor, dtype=torch.float32)
         for i, cs in enumerate(client_states):
             weighted_sum += cs['params']['critic'][k].float() * weights[i]
-        aggregated_critic[k] = weighted_sum.to(client_states[0]['params']['critic'][k].dtype)
+        aggregated_critic[k] = weighted_sum.to(sample_tensor.dtype)
         
     return {
         'actor': aggregated_actor,
