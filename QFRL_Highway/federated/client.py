@@ -35,17 +35,18 @@ class FederatedClient:
         self.num_samples = 0
 
     def get_parameters(self):
-        """Returns the local actor and critic state dicts."""
+        """Returns the local actor and critic state dicts without ephemeral state buffers."""
         return {
-            'actor': {k: v.cpu().clone() for k, v in self.actor.state_dict().items()},
+            'actor': {k: v.cpu().clone() for k, v in self.actor.state_dict().items() if not k.endswith('states')},
             'critic': {k: v.cpu().clone() for k, v in self.critic.state_dict().items()}
         }
 
     def set_parameters(self, global_params):
         """Updates local models with global parameters (both main and target)."""
-        self.actor.load_state_dict(global_params['actor'])
+        actor_sd = {k: v for k, v in global_params['actor'].items() if not k.endswith('states')}
+        self.actor.load_state_dict(actor_sd, strict=False)
         self.critic.load_state_dict(global_params['critic'])
-        self.target_actor.load_state_dict(global_params['actor'])
+        self.target_actor.load_state_dict(actor_sd, strict=False)
         self.target_critic.load_state_dict(global_params['critic'])
 
     def collect_experience(self, steps=1):

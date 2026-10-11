@@ -123,13 +123,15 @@ class DDPGAgent:
         return actor_loss.item(), critic_loss.item()
         
     def save_checkpoint(self, path: str, episode: int, seed: int):
-        """Saves a checkpoint."""
+        """Saves a checkpoint, excluding ephemeral simulation state buffers."""
+        actor_sd = {k: v for k, v in self.actor.state_dict().items() if not k.endswith('states')}
+        target_actor_sd = {k: v for k, v in self.actor_target.state_dict().items() if not k.endswith('states')}
         torch.save({
             'episode': episode,
             'seed': seed,
-            'actor_state_dict': self.actor.state_dict(),
+            'actor_state_dict': actor_sd,
             'critic_state_dict': self.critic.state_dict(),
-            'actor_target_state_dict': self.actor_target.state_dict(),
+            'actor_target_state_dict': target_actor_sd,
             'critic_target_state_dict': self.critic_target.state_dict(),
             'actor_optimizer_state_dict': self.actor_optimizer.state_dict(),
             'critic_optimizer_state_dict': self.critic_optimizer.state_dict(),
@@ -137,11 +139,13 @@ class DDPGAgent:
         }, path)
         
     def load_checkpoint(self, path: str):
-        """Loads a checkpoint."""
+        """Loads a checkpoint, safely ignoring ephemeral quantum state buffers."""
         checkpoint = torch.load(path, map_location=self.device)
-        self.actor.load_state_dict(checkpoint['actor_state_dict'])
+        actor_sd = {k: v for k, v in checkpoint['actor_state_dict'].items() if not k.endswith('states')}
+        target_actor_sd = {k: v for k, v in checkpoint['actor_target_state_dict'].items() if not k.endswith('states')}
+        self.actor.load_state_dict(actor_sd, strict=False)
         self.critic.load_state_dict(checkpoint['critic_state_dict'])
-        self.actor_target.load_state_dict(checkpoint['actor_target_state_dict'])
+        self.actor_target.load_state_dict(target_actor_sd, strict=False)
         self.critic_target.load_state_dict(checkpoint['critic_target_state_dict'])
         self.actor_optimizer.load_state_dict(checkpoint['actor_optimizer_state_dict'])
         self.critic_optimizer.load_state_dict(checkpoint['critic_optimizer_state_dict'])

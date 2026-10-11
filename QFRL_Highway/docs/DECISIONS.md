@@ -12,3 +12,5 @@
 10. FedAvg will be implemented only after single-client validation.
 11. Real TorchQuantum must eventually be tested on Kaggle/Linux.
 12. Highway modifications will happen only after baseline reproduction.
+13. Interpretation of paper's "8000 training epochs": Due to the prohibitive computational cost of 8000 episodes × 5000 steps (40,000,000 steps ≈ 9.2 GPU days on quantum simulator), baseline training experiments use a controlled multi-seed pilot and baseline configuration (50 steps/episode) with gradient update per step, documenting the mapping explicitly as an IMPLEMENTATION ASSUMPTION.
+14. Reward scale and physical fidelity: Raw physical reward represents instantaneous energy efficiency (completed_bits / total_energy ≈ 10^5 bits/Joule), resulting in raw critic MSE losses on the order of 10^10. To maintain physical integrity, reward formulas are not arbitrarily modified or scaled down.
