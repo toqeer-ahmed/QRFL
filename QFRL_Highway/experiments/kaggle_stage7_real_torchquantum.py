@@ -1,7 +1,14 @@
 import sys
+import types
 import torch
 import numpy as np
 import warnings
+
+# Safely ensure qiskit_ibm_runtime does not block torchquantum import if not installed
+try:
+    import qiskit_ibm_runtime
+except ImportError:
+    sys.modules['qiskit_ibm_runtime'] = types.ModuleType('qiskit_ibm_runtime')
 
 def run_environment_check():
     print("==================================================")

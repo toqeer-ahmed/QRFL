@@ -1,5 +1,13 @@
+import sys
+import types
 import torch
 import torch.nn as nn
+
+# Safely ensure qiskit_ibm_runtime does not block torchquantum import if not installed
+try:
+    import qiskit_ibm_runtime
+except ImportError:
+    sys.modules['qiskit_ibm_runtime'] = types.ModuleType('qiskit_ibm_runtime')
 
 try:
     import torchquantum as tq
