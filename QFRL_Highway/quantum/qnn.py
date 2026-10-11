@@ -1,7 +1,40 @@
 import torch
 import torch.nn as nn
-import torchquantum as tq
-import torchquantum.functional as tqf
+
+try:
+    import torchquantum as tq
+    import torchquantum.functional as tqf
+except ImportError:
+    import mock_torchquantum as tq
+    import mock_torchquantum.functional as tqf
+
+class Op1QAllLayer(nn.Module):
+    """
+    Wrapper for 1-qubit parameterized operations on all wires.
+    Works seamlessly with real TorchQuantum (tq.TrainableOpAll) and mock (tq.Op1QAllLayer).
+    """
+    def __init__(self, op, n_wires, has_params=True):
+        super().__init__()
+        self.n_wires = n_wires
+        self.has_params = has_params
+        if hasattr(tq, 'TrainableOpAll'):
+            self.layer = tq.TrainableOpAll(n_gate=n_wires, op=op)
+        elif hasattr(tq, 'Op1QAllLayer'):
+            self.layer = tq.Op1QAllLayer(op=op, n_wires=n_wires, has_params=has_params)
+        else:
+            raise AttributeError("Neither TrainableOpAll nor Op1QAllLayer found in torchquantum")
+
+    def forward(self, q_device):
+        return self.layer(q_device)
+
+    @property
+    def params(self):
+        # Convenience accessor for testing/backward compatibility
+        if hasattr(self.layer, 'params'):
+            return self.layer.params
+        if hasattr(self.layer, 'gate_all') and len(self.layer.gate_all) > 0:
+            return self.layer.gate_all[0].params
+        return None
 
 class QuantumActor(nn.Module):
     """
@@ -36,9 +69,9 @@ class QuantumActor(nn.Module):
         
         # IMPLEMENTATION CHOICE: Exact gate ordering per layer (Rx, Ry, Rz, CNOT)
         # The paper specifies the use of these gates and 12 layers, but not the specific sequence.
-        self.rx_layers = nn.ModuleList([tq.Op1QAllLayer(op=tq.RX, n_wires=self.n_qubits, has_params=True) for _ in range(self.n_layers)])
-        self.ry_layers = nn.ModuleList([tq.Op1QAllLayer(op=tq.RY, n_wires=self.n_qubits, has_params=True) for _ in range(self.n_layers)])
-        self.rz_layers = nn.ModuleList([tq.Op1QAllLayer(op=tq.RZ, n_wires=self.n_qubits, has_params=True) for _ in range(self.n_layers)])
+        self.rx_layers = nn.ModuleList([Op1QAllLayer(op=tq.RX, n_wires=self.n_qubits, has_params=True) for _ in range(self.n_layers)])
+        self.ry_layers = nn.ModuleList([Op1QAllLayer(op=tq.RY, n_wires=self.n_qubits, has_params=True) for _ in range(self.n_layers)])
+        self.rz_layers = nn.ModuleList([Op1QAllLayer(op=tq.RZ, n_wires=self.n_qubits, has_params=True) for _ in range(self.n_layers)])
         
         # IMPLEMENTATION CHOICE: Classical expansion R^4 -> R^5 -> Tanh
         self.action_expansion = nn.Sequential(
@@ -56,8 +89,9 @@ class QuantumActor(nn.Module):
         # Reset quantum device
         self.q_device.reset_states(batch_size)
         
-        # Save for mock gradient flow
-        self.q_device.mock_angles = angles
+        # Save for mock gradient flow if using mock
+        if hasattr(self.q_device, 'mock_angles'):
+            self.q_device.mock_angles = angles
         
         # 2. PAPER-SPECIFIED: Hadamard initialization
         for w in range(self.n_qubits):

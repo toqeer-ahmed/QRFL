@@ -17,7 +17,10 @@ def test_qnn_gradients():
     actor = QuantumActor(state_dim=150, action_dim=5)
     
     # Check if we are using the mock
-    import torchquantum as tq
+    try:
+        import torchquantum as tq
+    except ImportError:
+        import mock_torchquantum as tq
     print(f"TorchQuantum version loaded: {getattr(tq, '__version__', 'UNKNOWN')}")
     
     # 1. State Input

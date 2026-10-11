@@ -36,13 +36,14 @@ class Observable:
 PauliZ = Observable()
 
 class Op1QAllLayer(nn.Module):
-    def __init__(self, op, n_wires, has_params=False):
+    def __init__(self, n_gate=None, op=None, n_wires=None, has_params=True):
         super().__init__()
         self.op = op
-        self.n_wires = n_wires
+        self.n_wires = n_wires if n_wires is not None else n_gate
+        self.n_gate = self.n_wires
         self.has_params = has_params
-        if has_params:
-            self.params = nn.Parameter(torch.randn(n_wires))
+        if has_params and self.n_wires is not None:
+            self.params = nn.Parameter(torch.randn(self.n_wires))
             
     def forward(self, q_device):
         pass
@@ -51,3 +52,5 @@ class Op1QAllLayer(nn.Module):
 RX = "RX"
 RY = "RY"
 RZ = "RZ"
+
+TrainableOpAll = Op1QAllLayer
