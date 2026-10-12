@@ -51,6 +51,11 @@ class QFRLEnvironment:
         self.config = config
         self.max_steps = config.get('rl', {}).get('episode_length', 5000)
         
+        # Configure reward function (ratio vs negative_energy)
+        from rl.reward import RewardFunction
+        reward_type = config.get('reward_type', 'ratio')
+        self.reward_func = RewardFunction(reward_type=reward_type)
+        
         self.vehicles.clear()
         self.rsus.clear()
         self.tasks.clear()

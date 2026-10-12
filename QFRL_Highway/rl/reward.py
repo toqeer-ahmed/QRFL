@@ -5,8 +5,14 @@ class RewardFunction:
     Objective: ENERGY EFFICIENCY
     Conceptually defined as: completed task bits / total energy consumption
     """
-    def __init__(self):
-        pass
+    def __init__(self, reward_type: str = 'ratio'):
+        """
+        Initializes RewardFunction.
+        Args:
+            reward_type (str): 'ratio' for completed_bits / total_energy,
+                              'negative_energy' for -total_energy (direct energy minimization).
+        """
+        self.reward_type = reward_type
 
     def calculate_reward(self, env_state_info: dict) -> tuple:
         """
@@ -30,8 +36,12 @@ class RewardFunction:
             
         energy_efficiency = completed_bits / total_energy
         
-        # Reward is directly the energy efficiency (or scaled if needed)
-        reward = energy_efficiency
+        if self.reward_type == 'negative_energy':
+            # Mathematical objective: direct total energy minimization
+            reward = -float(total_energy)
+        else:
+            # Baseline objective: per-step bit-energy ratio
+            reward = float(energy_efficiency)
         
         info = {
             'completed_bits': completed_bits,

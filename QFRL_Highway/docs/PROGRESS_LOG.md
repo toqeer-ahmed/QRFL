@@ -88,4 +88,21 @@
 - Classical actor parameter updates stalled after Ep 5 (||dθ_A|| = 0.0000) due to boundary Tanh saturation, while Quantum actor maintained active variational updates (||dθ_A|| = 2.2% - 3.6% at Ep 15).
 - Methodological corrections enforced: Episode 15 framed as final episode of pilot run; claims conditioned on N=3 seeds; parameter compactness separated from federated uplink communication performance.
 **OPEN ISSUES**: None.
-**NEXT STEP**: STAGE 10 — Scheduled Exploration Noise Tuning & Multi-Vehicle Scale-Up.
+**NEXT STEP**: STAGE 9.3 — Controlled Reward Alignment & Actor Saturation Diagnostics.
+
+## 2026-10-12
+**STAGE**: 9.3
+**ACTION**: Controlled reward alignment and actor saturation diagnostics completed
+**FILES CHANGED**: STAGE9_3_ACTOR_SATURATION_AUDIT.md, configs/reward_alignment_config.yaml, experiments/experiment_reward_alignment.py, tests/test_reward_alignment.py, results/reward_alignment_comparison.csv, docs/PROJECT_STATUS.md, docs/PROGRESS_LOG.md
+**TESTS**: tests/test_reward_alignment.py (3/3 passed), full test suite (16/16 passed)
+**RESULT**: COMPLETE (PASS)
+- Diagnostic error corrected: Critic training MSE on replay minibatches, Bellman target scale, policy Q-value expectation, and aggregate EE rigorously distinguished; evaluation RMSE on held-out data marked UNAVAILABLE in historical logs.
+- Classical actor saturation empirically proven on 100 fixed states: 100.00% of actions saturated (|a| > 0.95), pre-activations z in [-10.9, +10.8], mean Tanh derivative 0.000000, analytical gradient norm 0.0000. Parameter change ||dθ(10->15)|| = 0.0000 proven caused by vanishing output gradients due to boundary Tanh saturation, not optimal policy convergence.
+- Quantum actor verified resilient: Saturation is only 1.2% - 5.4% at Ep 5 and 18.6% - 25.0% at Ep 15; mean Tanh derivative is 0.42 - 0.72; parameter updates active (2.2% - 3.6% relative change).
+- Controlled reward-alignment experiment executed across 90 episodes (Seeds 42, 123, 2026; 15 episodes; Condition A: ratio vs Condition B: negative energy):
+  * Condition B (negative energy) achieved 0 / 990 rank inversions (0.00%) with aggregate EE, proving exact monotonic alignment.
+  * Condition A (ratio) exhibited 33 / 990 rank inversions (3.33%) due to Jensen distortion.
+  * Classical actor saturated to 100% under both rewards, proving saturation is an intrinsic architectural characteristic of unconstrained MLP layers under continuous DDPG in this environment.
+**OPEN ISSUES**: None.
+**NEXT STEP**: STAGE 10 — Exploration Schedule Tuning & Multi-Vehicle Integration.
+

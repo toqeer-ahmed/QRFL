@@ -1,0 +1,62 @@
+# Stage 9.3: Controlled Reward-Alignment Experiment Configuration
+# Inherits exact physical and RL parameters from paper_config.yaml
+
+simulation:
+
+vehicles:
+  count: 30
+  max_velocity_kmh: 40
+  cpu_frequency_ghz: 4
+  max_transmit_power_dbm: 20
+
+rsu:
+  cpu_frequency_ghz: 9
+
+uav:
+  max_velocity_kmh: 36
+  altitude_m: 300
+  cpu_frequency_ghz: 12
+
+irs:
+  num_elements: 16
+
+tasks:
+  input_bits: 1048576 # 1 Mb
+  cycles_per_bit: 1000
+
+computation:
+  kappa: 1.0e-28
+
+communication:
+  noise_power_dbm: -120
+  beta_1: 0.001
+  beta_2: 2.2
+  beta_3: 2.2
+  beta_4: 2.5
+  K_rician: 10.0
+  wavelength_m: 0.1
+  irs_element_spacing_m: 0.05
+  bandwidth_hz: 1000000.0
+
+rl:
+  state_dim: 150
+  action_dim: 5
+  replay_buffer_size: 6000
+  batch_size: 32
+  episode_length: 50
+  gamma: 0.95
+  actor_learning_rate: 0.001
+  critic_learning_rate: 0.0025
+  exploration_noise: 0.1
+
+reward_experiment:
+  # Evaluates whether directly minimizing total energy avoids reciprocal Jensen distortion
+  conditions:
+    - name: "ratio"
+      description: "Baseline reciprocal step reward: R_t = B_t / E_t (bits/Joule)"
+    - name: "negative_energy"
+      description: "Direct linear energy minimization: R_t = -E_t (Joules)"
+  seeds: [42, 123, 2026]
+  episodes_per_seed: 15
+  steps_per_episode: 50
+  models: ["classical", "quantum"]
