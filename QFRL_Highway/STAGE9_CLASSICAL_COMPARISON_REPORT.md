@@ -71,13 +71,13 @@ To ensure an unbiased, scientifically controlled comparison:
 | Metric | Classical DDPG Baseline | Quantum QFRL Baseline | Absolute Delta ($\text{Q} - \text{C}$) | Relative Delta ($\%$) |
 |---|---|---|---|---|
 | **Actor Parameters** | 14,149 | **773** | -13,376 | **-94.5%** |
-| **Mean Energy Efficiency ($\text{Mb/J}$)** | $\mathbf{0.5231 \pm 0.0689}$ | $0.3478 \pm 0.2157$ | $-0.1753\text{ Mb/J}$ | $-33.51\%$ |
-| **Mean Total Energy ($\text{J}$)** | $\mathbf{3,102.60 \pm 737.14}$ | $9,546.86 \pm 8,675.92$ | $+6,444.26\text{ J}$ | $+207.7\%$ |
-| **Mean Episode Reward** | $\mathbf{27.28 \times 10^6 \pm 2.36 \times 10^6}$ | $17.95 \times 10^6 \pm 11.18 \times 10^6$ | $-9.33 \times 10^6$ | $-34.20\%$ |
-| **Mean Latency ($\text{s}$)** | $\mathbf{0.1685 \pm 0.0120}$ | $0.1937 \pm 0.0797$ | $+0.0252\text{ s}$ | $+14.96\%$ |
+| **Mean Energy Efficiency ($\text{Mb/J}$)** | $\mathbf{0.5231 \pm 0.0697}$ | $0.3478 \pm 0.2157$ | $-0.1753\text{ Mb/J}$ | $-33.51\%$ |
+| **Mean Total Energy ($\text{J}$)** | $\mathbf{3,102.60 \pm 745.47}$ | $9,546.86 \pm 8,675.92$ | $+6,444.26\text{ J}$ | $+207.7\%$ |
+| **Mean Episode Reward** | $\mathbf{27.28 \times 10^6 \pm 2.39 \times 10^6}$ | $17.95 \times 10^6 \pm 11.18 \times 10^6$ | $-9.33 \times 10^6$ | $-34.20\%$ |
+| **Mean Latency ($\text{s}$)** | $\mathbf{0.2562 \pm 0.0089}$ | $0.2016 \pm 0.0768$ | $-0.0546\text{ s}$ | $-21.31\%$ |
 | **Completed Bits** | $1.57 \times 10^9$ | $1.57 \times 10^9$ | $0.00$ | $0.00\%$ |
-| **Inference Time per Action** | **$0.31\text{ ms}$** | $12.4\text{ ms}$ | $+12.09\text{ ms}$ | $+3900\%$ |
-| **Total 45-Ep Runtime** | **$17.8\text{ seconds}$** | $696.2\text{ seconds}$ | $+678.4\text{ s}$ | **~39x slower** |
+| **Inference Time per Action** | **$0.35\text{ ms}$** | $69.56\text{ ms}$ | $+69.21\text{ ms}$ | **~197x slower** |
+| **Total 45-Ep Runtime** | **$13.8\text{ seconds}$** | $647.1\text{ seconds}$ | $+633.3\text{ s}$ | **~47x slower** |
 
 ---
 
