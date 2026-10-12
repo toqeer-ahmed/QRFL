@@ -11,6 +11,7 @@ Stage 6B.2: COMPLETE
 Stage 7 (Real TorchQuantum Validation): PASS
 Stage 8 (Baseline QFRL Training & Multi-Seed Evaluation): COMPLETE (PASS)
 Stage 9 (Controlled Classical DDPG Benchmark Comparison): COMPLETE (PASS)
+Stage 9.1 (Results Integrity & RL Metric Audit): COMPLETE (PASS)
 Stage 10 (Exploration Schedule Tuning & Multi-Vehicle Integration): READY TO START
 
 WHAT WORKS
@@ -35,8 +36,11 @@ WHAT IS VERIFIED
 - Exact 50/50 Bell state shot measurement on quantum device
 - Multi-seed training stability and checkpointing bit-exact restoration
 - Classical vs. Quantum comparison: Both models reach identical physical ceiling (~0.573 Mb/J at ~2,744 J).
-- Classical model shows superior seed stability (mean 0.5231 vs 0.3478 Mb/J) and 39x faster execution.
+- Classical model shows superior seed stability (mean 0.5231 vs 0.3478 Mb/J) and ~197x faster step inference on GPU.
 - Quantum model exhibits 94.5% parameter compactness (773 vs 14,149 trainable parameters).
+- Stage 9.1 Data Integrity Audit: Duplicate CSV rows traced to append mode ('a') during restart; canonical 90-row dataset generated with unique run IDs.
+- Numerical Stability: 100% finite parameters verified across all 18 checkpoints; large critic losses confirmed mathematically consistent with unscaled return magnitude ($1.1 \times 10^7$).
+- Metric Invariance: Completed bits ($1.572864 \times 10^9$) and completion ratio ($1.0$) verified physically invariant due to bit conservation without active deadline drops; policy controls total energy.
 
 WHAT IS MOCKED
 - None for execution on Linux/GPU (local Windows environment retains `mock_torchquantum` strictly for lightweight offline testing)

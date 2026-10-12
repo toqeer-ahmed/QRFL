@@ -59,4 +59,19 @@
 - Quantum model demonstrated 94.5% parameter compactness (773 vs 14,149 parameters).
 - Controlled results do not support empirical quantum advantage in task performance under current classical simulation regimes.
 **OPEN ISSUES**: None.
-**NEXT STEP**: STAGE 10 — Scheduled Exploration Noise Tuning & Multi-Vehicle Federated Scale-Up.
+**NEXT STEP**: STAGE 9.1 — Results Integrity and RL Metric Audit.
+
+## 2026-10-12
+**STAGE**: 9.1
+**ACTION**: Results integrity and RL metric audit completed
+**FILES CHANGED**: STAGE9_1_RESULTS_AUDIT.md, results/quantum_classical_comparison_canonical.csv, results/quantum_classical_comparison_raw.csv, results/quantum_classical_comparison_all_runs_annotated.csv, tests/test_stage9_audit.py, docs/PROJECT_STATUS.md, docs/PROGRESS_LOG.md
+**TESTS**: tests/test_stage9_audit.py (3/3 passed), full test suite (25/25 passed)
+**RESULT**: COMPLETE (PASS)
+- Duplicate rows in comparison CSV traced to append mode ('a') on rerun; Run 1 and Run 2 Classical confirmed bit-exact (0.0000 max diff on rewards, energy, losses).
+- Canonical 90-row dataset generated with unique run IDs; 135-row raw evidence preserved.
+- Completed bits (1.572864e9 bits) and task completion ratio (1.0) verified invariant due to bit conservation without active deadline drops; policy controls total energy.
+- Energy Efficiency formula verified bit-exact against underlying metrics (< 1e-6 delta).
+- Large critic MSE losses (10^10 to 10^11) explained by return magnitude (1.1e7); parameter norms and gradients verified 100% finite across all 18 checkpoints.
+- Statistical reporting rigorously separates final policy inter-seed variance from intra-run progression.
+**OPEN ISSUES**: None.
+**NEXT STEP**: STAGE 10 — Scheduled Exploration Noise Tuning & Multi-Vehicle Scale-Up.

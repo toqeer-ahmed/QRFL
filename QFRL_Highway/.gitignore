@@ -8,6 +8,8 @@ checkpoints/
 *.pt
 *.pth
 *.ckpt
-results/
-large generated files
-temporary logs
+results/*
+!results/*.csv
+!results/*.png
+!results/*.yaml
+result/
