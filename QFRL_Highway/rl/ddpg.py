@@ -66,7 +66,7 @@ class DDPGAgent:
         self.critic_optimizer = optim.Adam(self.critic.parameters(), lr=self.critic_lr)
         self.critic_criterion = nn.MSELoss()
 
-    def select_action(self, state: np.ndarray, add_noise=True) -> np.ndarray:
+    def select_action(self, state: np.ndarray, add_noise=True, noise_scale=None) -> np.ndarray:
         """Selects a continuous action in [-1, 1]."""
         state_tensor = torch.FloatTensor(state).unsqueeze(0).to(self.device)
         
@@ -75,7 +75,8 @@ class DDPGAgent:
             
         if add_noise:
             # IMPLEMENTATION CHOICE: Gaussian exploration noise
-            noise = np.random.normal(0, self.exploration_noise, size=action.shape)
+            scale = noise_scale if noise_scale is not None else self.exploration_noise
+            noise = np.random.normal(0, scale, size=action.shape)
             action = action + noise
             
         return np.clip(action, -1.0, 1.0)

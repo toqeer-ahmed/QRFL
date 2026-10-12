@@ -61,6 +61,18 @@ def verify_quantum_backend(allow_mock: bool = False):
     else:
         print("GPU Device Name     : N/A (Running on CPU)")
 
+    # Ensure torchpack and torchdiffeq are available for torchquantum
+    try:
+        import torchpack
+    except ImportError:
+        try:
+            import subprocess
+            print("[INFO] Installing missing TorchQuantum utility: torchpack & torchdiffeq...")
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", "--no-deps", "torchpack", "torchdiffeq"])
+            print("[PASS] torchpack installed successfully.")
+        except Exception as e:
+            print(f"[WARN] Auto-install of torchpack failed: {e}")
+
     try:
         import torchquantum as tq
         backend_path = str(getattr(tq, '__file__', ''))
@@ -337,7 +349,12 @@ def run_controlled_comparison(
                     
                 for step in range(steps_per_episode):
                     t0 = time.time()
-                    action = agent.select_action(state, add_noise=True, noise_scale=current_noise)
+                    try:
+                        action = agent.select_action(state, add_noise=True, noise_scale=current_noise)
+                    except TypeError:
+                        if hasattr(agent, 'exploration_noise'):
+                            agent.exploration_noise = current_noise
+                        action = agent.select_action(state, add_noise=True)
                     t_inf = (time.time() - t0) * 1000.0
                     inference_times.append(t_inf)
                     
