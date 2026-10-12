@@ -74,4 +74,18 @@
 - Large critic MSE losses (10^10 to 10^11) explained by return magnitude (1.1e7); parameter norms and gradients verified 100% finite across all 18 checkpoints.
 - Statistical reporting rigorously separates final policy inter-seed variance from intra-run progression.
 **OPEN ISSUES**: None.
+**NEXT STEP**: STAGE 9.2 — Reward-Objective Consistency & Learning-Dynamics Audit.
+
+## 2026-10-12
+**STAGE**: 9.2
+**ACTION**: Reward-objective consistency and learning-dynamics audit completed
+**FILES CHANGED**: STAGE9_2_REWARD_OBJECTIVE_AUDIT.md, STAGE9_1_RESULTS_AUDIT.md, tests/test_reward_objective.py, docs/PROJECT_STATUS.md, docs/PROGRESS_LOG.md
+**TESTS**: tests/test_reward_objective.py (2/2 passed), full test suite (27/27 passed)
+**RESULT**: COMPLETE (PASS)
+- Mathematical non-equivalence established: step reward sum optimizes Harmonic Mean of energy (J_RL = B * T / HM(E)), while aggregate EE optimizes Arithmetic Mean (EE = B / AM(E)). AM-HM inequality proven and verified on real data (mean Jensen gap 2.4% - 5.5%).
+- 33 pairwise rank inversions (3.33%) documented in Classical data where higher RL reward yielded lower aggregate EE.
+- Learning dynamics audited: Critic relative RMSE drops from >1000% to 16.75% (Classical) and 16.83% (Quantum) by Episode 15.
+- Classical actor parameter updates stalled after Ep 5 (||dθ_A|| = 0.0000) due to boundary Tanh saturation, while Quantum actor maintained active variational updates (||dθ_A|| = 2.2% - 3.6% at Ep 15).
+- Methodological corrections enforced: Episode 15 framed as final episode of pilot run; claims conditioned on N=3 seeds; parameter compactness separated from federated uplink communication performance.
+**OPEN ISSUES**: None.
 **NEXT STEP**: STAGE 10 — Scheduled Exploration Noise Tuning & Multi-Vehicle Scale-Up.

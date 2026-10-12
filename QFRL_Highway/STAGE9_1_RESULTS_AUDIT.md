@@ -220,9 +220,25 @@ Following standard RL reporting guidelines, statistics are reported separately f
 
 ## 8. Artifact Register
 
-- **Audit Report**: [`STAGE9_1_RESULTS_AUDIT.md`](file:///d:/Study%20Material/Research/QRFL/QFRL_Highway/STAGE9_1_RESULTS_AUDIT.md)
+- **Stage 9.1 Audit Report**: [`STAGE9_1_RESULTS_AUDIT.md`](file:///d:/Study%20Material/Research/QRFL/QFRL_Highway/STAGE9_1_RESULTS_AUDIT.md)
+- **Stage 9.2 Reward & Dynamics Audit Report**: [`STAGE9_2_REWARD_OBJECTIVE_AUDIT.md`](file:///d:/Study%20Material/Research/QRFL/QFRL_Highway/STAGE9_2_REWARD_OBJECTIVE_AUDIT.md)
 - **Raw Comparison Data (135 rows)**: [`results/quantum_classical_comparison_raw.csv`](file:///d:/Study%20Material/Research/QRFL/QFRL_Highway/results/quantum_classical_comparison_raw.csv)
 - **Canonical Comparison Data (90 rows)**: [`results/quantum_classical_comparison_canonical.csv`](file:///d:/Study%20Material/Research/QRFL/QFRL_Highway/results/quantum_classical_comparison_canonical.csv)
 - **Annotated Multi-Run Data (135 rows)**: [`results/quantum_classical_comparison_all_runs_annotated.csv`](file:///d:/Study%20Material/Research/QRFL/QFRL_Highway/results/quantum_classical_comparison_all_runs_annotated.csv)
 - **PyTorch Checkpoints**: All 18 `.pt` models preserved in [`results/checkpoints/`](file:///d:/Study%20Material/Research/QRFL/QFRL_Highway/results/checkpoints/)
-- **Audit Test Suite**: [`tests/test_stage9_audit.py`](file:///d:/Study%20Material/Research/QRFL/QFRL_Highway/tests/test_stage9_audit.py) (All 3 tests pass)
+- **Audit Test Suite**: [`tests/test_stage9_audit.py`](file:///d:/Study%20Material/Research/QRFL/QFRL_Highway/tests/test_stage9_audit.py) & [`tests/test_reward_objective.py`](file:///d:/Study%20Material/Research/QRFL/QFRL_Highway/tests/test_reward_objective.py) (All 5 audit tests pass)
+
+---
+
+## 9. Stage 9.2 Linked Corrections & Qualification
+
+*Detailed derivations and checkpoint delta measurements are documented in [`STAGE9_2_REWARD_OBJECTIVE_AUDIT.md`](file:///d:/Study%20Material/Research/QRFL/QFRL_Highway/STAGE9_2_REWARD_OBJECTIVE_AUDIT.md).*
+
+1. **Reward vs. Aggregate EE Equivalence**:
+   Cumulative step reward optimizes the Harmonic Mean of step energies, while aggregate EE optimizes the Arithmetic Mean. By Jensen's inequality, $\frac{J_{\text{RL}}}{T \times 10^6} \ge \eta_{\text{EE}}$. Exactly 33 rank inversions (3.33%) exist in the Classical data, showing they are not strictly rank-preserving.
+2. **Convergence Status Qualification**:
+   Episode 15 is strictly the final episode of a short 15-episode pilot training horizon. The Classical actor froze by Episode 5 due to Tanh activation saturation at boundaries ($\|\Delta \theta_A(10 \to 15)\| \approx 0.0000$), whereas the Quantum actor maintained active plasticity ($\|\Delta \theta_A(10 \to 15)\| \approx 2.2\%\text{--}3.6\%$).
+3. **Conditioning on $N=3$**:
+   All comparative claims are strictly conditioned on the sample of three seeds (`[42, 123, 2026]`).
+4. **Parameter Footprint vs. Federated Communication**:
+   The 94.5% parameter reduction is a model architectural attribute; empirical proof of communication savings requires federated aggregation trials under bandwidth constraints (Stage 10).
