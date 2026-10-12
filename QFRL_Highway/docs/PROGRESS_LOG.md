@@ -104,5 +104,21 @@
   * Condition A (ratio) exhibited 33 / 990 rank inversions (3.33%) due to Jensen distortion.
   * Classical actor saturated to 100% under both rewards, proving saturation is an intrinsic architectural characteristic of unconstrained MLP layers under continuous DDPG in this environment.
 **OPEN ISSUES**: None.
+**NEXT STEP**: STAGE 9.4 — Verify Actor Gradients and Reward Discounting.
+
+## 2026-10-12
+**STAGE**: 9.4
+**ACTION**: Verification of actor gradients and reward discounting completed
+**FILES CHANGED**: STAGE9_4_GRADIENT_AND_DISCOUNT_AUDIT.md, tests/test_gradient_and_discount.py, docs/PROJECT_STATUS.md, docs/PROGRESS_LOG.md
+**TESTS**: tests/test_gradient_and_discount.py (4/4 passed), full test suite (20/20 passed)
+**RESULT**: COMPLETE (PASS)
+- Classical actor gradient vanishing verified by direct measurement: Float32 autograd produces exactly 0.000000e+00 actor gradient norm across all 9 checkpoints because |z| >= 9.2 causes tanh(z) to round to +/-1.0f (underflowing float32 precision relative to 1.0; analytical sech^2(z) is ~1e-9).
+- Checkpoint parameters verified bit-exact: max abs diff between Ep 10 and Ep 15 is 0.00000000e+00 across all 14,149 parameters.
+- Critic isolation verified: Critic receives non-zero autograd gradients (8.3e3 to 6.5e4) during actor_loss.backward(), but actor_optimizer.step() updates only actor parameters (critic parameter delta is 0.000000e+00).
+- Quantum actor gradients verified active: Real actor gradient norm is 7.56e2 to 1.54e4, mean Tanh' is 0.388 to 0.663, and parameter step is ~5.0e-3.
+- Discount audit: Proved gamma=0.95 introduces temporal preference favoring deferred energy consumption; demonstrated deterministic rank inversion where a sequence with higher total energy yields a higher discounted return.
+- Stage 9.3 claims audited and rigorously classified as VERIFIED BY DIRECT MEASUREMENT, SUPPORTED BUT NOT PROVEN, or NOT VERIFIED.
+**OPEN ISSUES**: None.
 **NEXT STEP**: STAGE 10 — Exploration Schedule Tuning & Multi-Vehicle Integration.
+
 

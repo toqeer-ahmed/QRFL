@@ -14,6 +14,7 @@ Stage 9 (Controlled Classical DDPG Benchmark Comparison): COMPLETE (PASS)
 Stage 9.1 (Results Integrity & RL Metric Audit): COMPLETE (PASS)
 Stage 9.2 (Reward-Objective Consistency & Learning-Dynamics Audit): COMPLETE (PASS)
 Stage 9.3 (Controlled Reward Alignment & Actor Saturation Diagnostics): COMPLETE (PASS)
+Stage 9.4 (Actor Gradients & Reward Discounting Verification): COMPLETE (PASS)
 Stage 10 (Exploration Schedule Tuning & Multi-Vehicle Integration): READY TO START
 
 WHAT WORKS
@@ -46,6 +47,7 @@ WHAT IS VERIFIED
 - Stage 9.2 Reward Objective Audit: Proved Jensen inequality creates 33 rank inversions (3.33%) between cumulative step reward and aggregate EE under reciprocal reward $R_t = B_t / E_t$.
 - Stage 9.3 Actor Saturation Diagnostics: Empirically proved Classical actor is 100% boundary saturated ($|a| > 0.95$, $z \approx \pm 10$) with vanishing output gradients ($\nabla_{\theta_A} \mathcal{L} \equiv 0.0000$), explaining zero parameter changes between Ep 10 and 15. In contrast, Quantum actor maintains healthy gradient flow ($1 - a^2 \in [0.42, 0.72]$) and 2.2%-3.6% active parameter adaptation.
 - Stage 9.3 Controlled Reward Alignment: Proved minimizing total energy $\sum (-E_t)$ is strictly equivalent to maximizing aggregate EE under invariant task bits; verified 0 rank inversions (0.00%) across 90 controlled trial episodes.
+- Stage 9.4 Actor Gradient & Discount Verification: Directly measured float32 actor gradients as exactly 0.000000e+00 across all 9 classical checkpoints due to machine precision underflow of sech^2(z) (< 1e-8 vs eps/2). Bit-exact parameter change between Ep 10 and 15 is 0.00000000e+00. Critic isolation verified (critic delta = 0.000000e+00 after actor optimizer step). Proved discounted DDPG objective (gamma=0.95) introduces temporal preference, yielding rank inversions between discounted returns and undiscounted total energy.
 
 WHAT IS MOCKED
 - None for execution on Linux/GPU (local Windows environment retains `mock_torchquantum` strictly for lightweight offline testing)
