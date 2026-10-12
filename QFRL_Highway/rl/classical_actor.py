@@ -4,9 +4,27 @@ import torch.nn as nn
 import torch.optim as optim
 import numpy as np
 
-# Note: We import ONLY the classical Critic from rl.ddpg.
-# We do NOT import QuantumActor, torchquantum, or any quantum components.
-from rl.ddpg import Critic
+class Critic(nn.Module):
+    """
+    Classical MLP Critic for QFRL.
+    Matches the exact critic architecture used in the quantum baseline:
+    Input: state (150) + action (5) = 155
+    Hidden: 64 -> ReLU -> 64 -> ReLU -> 1
+    Output: Q-value (1)
+    """
+    def __init__(self, state_dim=150, action_dim=5, hidden_dim1=64, hidden_dim2=64):
+        super(Critic, self).__init__()
+        self.net = nn.Sequential(
+            nn.Linear(state_dim + action_dim, hidden_dim1),
+            nn.ReLU(),
+            nn.Linear(hidden_dim1, hidden_dim2),
+            nn.ReLU(),
+            nn.Linear(hidden_dim2, 1)
+        )
+        
+    def forward(self, state: torch.Tensor, action: torch.Tensor) -> torch.Tensor:
+        x = torch.cat([state, action], dim=-1)
+        return self.net(x)
 
 class ClassicalActor(nn.Module):
     """
