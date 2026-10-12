@@ -15,9 +15,10 @@ if not os.path.exists(repo_dir):
     print("Cloning repository...")
     !git clone https://github.com/toqeer-ahmed/QRFL.git
 else:
-    print("Repository exists, updating...")
+    print("Repository exists, syncing to clean origin/main...")
     %cd /kaggle/working/QRFL
-    !git pull
+    !git fetch origin
+    !git reset --hard origin/main
     %cd /kaggle/working
 
 qfrl_dir = os.path.join(repo_dir, 'QFRL_Highway')
