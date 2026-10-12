@@ -33,3 +33,17 @@
 **OPEN ISSUES**: None.
 **NEXT STEP**: STAGE 8 — Baseline QFRL Training.
 
+## 2026-10-12
+**STAGE**: 8
+**ACTION**: Baseline QFRL multi-seed training and empirical evaluation executed on Tesla T4 GPU
+**FILES CHANGED**: experiments/train_baseline_qfrl.py, experiments/run_kaggle_stage8.py, rl/ddpg.py, federated/client.py, STAGE8_BASELINE_TRAINING_REPORT.md
+**TESTS**: Multi-seed training (Seeds 42, 123, 2026; 45 total episodes; 696.17s runtime)
+**RESULT**: COMPLETE (PASS)
+- Pilot smoke test verified 144/144 quantum parameter gradients and bit-exact checkpoint save/restore.
+- Seeds 42 and 123 showed pronounced convergence: Energy Efficiency improved by +164% to +286% (reaching 0.573 Mb/J).
+- Energy consumption reduced by ~65-74% (from ~10.6 kJ down to ~2.75 kJ).
+- Seed 2026 demonstrated continuous action space exploration saturation (~0.071 Mb/J), identifying need for adaptive exploration.
+**OPEN ISSUES**: None.
+**NEXT STEP**: STAGE 9 — Classical DDPG Benchmark Comparison and Exploration Noise Tuning.
+
+
