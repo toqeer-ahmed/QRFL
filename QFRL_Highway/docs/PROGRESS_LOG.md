@@ -46,4 +46,17 @@
 **OPEN ISSUES**: None.
 **NEXT STEP**: STAGE 9 — Classical DDPG Benchmark Comparison and Exploration Noise Tuning.
 
-
+## 2026-10-12
+**STAGE**: 9
+**ACTION**: Controlled Classical DDPG benchmark implementation, pilot verification, and empirical comparison
+**FILES CHANGED**: rl/classical_actor.py, tests/test_classical_actor.py, experiments/compare_quantum_classical.py, experiments/run_kaggle_stage9.py, experiments/kaggle_stage9_full_cell.py, experiments/experiment_exploration_schedule.py, STAGE9_CLASSICAL_COMPARISON_REPORT.md
+**TESTS**: tests/test_classical_actor.py (4/4 tests pass), compare_quantum_classical.py --pilot_only (PASS), 45-episode matched Classical evaluation (Seeds 42, 123, 2026)
+**RESULT**: COMPLETE (PASS)
+- Pre-experiment audit resolved completed bits invariance (1.57e9 bits), EE aggregation protocol, and critic loss magnitude (10^10 to 10^11).
+- ClassicalActor (14,149 params) implemented with zero quantum dependencies.
+- Classical DDPG reached identical peak Energy Efficiency (~0.573 Mb/J) and minimum energy (~2,742 J) as Quantum DDPG.
+- Classical DDPG demonstrated superior stability across all seeds (mean EE 0.5231 +/- 0.0689 Mb/J, converging on Seed 2026 where Quantum saturated) and ran ~39x faster (17.8s vs 696.2s).
+- Quantum model demonstrated 94.5% parameter compactness (773 vs 14,149 parameters).
+- Controlled results do not support empirical quantum advantage in task performance under current classical simulation regimes.
+**OPEN ISSUES**: None.
+**NEXT STEP**: STAGE 10 — Scheduled Exploration Noise Tuning & Multi-Vehicle Federated Scale-Up.

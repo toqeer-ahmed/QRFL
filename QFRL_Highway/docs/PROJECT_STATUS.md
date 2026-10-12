@@ -10,8 +10,8 @@ Stage 6B.1: COMPLETE
 Stage 6B.2: COMPLETE
 Stage 7 (Real TorchQuantum Validation): PASS
 Stage 8 (Baseline QFRL Training & Multi-Seed Evaluation): COMPLETE (PASS)
-Stage 9 (Classical DDPG vs. QFRL Benchmark Comparison): READY TO START
-Highway experiment (Multi-Vehicle Integration): NOT STARTED
+Stage 9 (Controlled Classical DDPG Benchmark Comparison): COMPLETE (PASS)
+Stage 10 (Exploration Schedule Tuning & Multi-Vehicle Integration): READY TO START
 
 WHAT WORKS
 - Classical actor/critic/environment pipeline
@@ -21,7 +21,8 @@ WHAT WORKS
 - Federated Averaging (FedAvg) synchronization with complex buffer support
 - End-to-end multi-seed baseline training (45 episodes total across Seeds 42, 123, 2026)
 - Gradient backpropagation through all 144 variational quantum circuit parameters on GPU
-- Convergence demonstrated: Energy Efficiency improved from 0.15–0.22 Mb/J up to 0.57 Mb/J (+164% to +286%)
+- Classical MLP Actor benchmark (14,149 parameters) with zero quantum dependencies
+- Controlled side-by-side empirical comparison between Classical and Quantum DDPG
 
 WHAT IS VERIFIED
 - Unit conversions (dBm to Watts, km/h to m/s)
@@ -33,18 +34,21 @@ WHAT IS VERIFIED
 - Real gradient flow through 144 quantum circuit parameters (12 layers of Rx, Ry, Rz, CNOT)
 - Exact 50/50 Bell state shot measurement on quantum device
 - Multi-seed training stability and checkpointing bit-exact restoration
+- Classical vs. Quantum comparison: Both models reach identical physical ceiling (~0.573 Mb/J at ~2,744 J).
+- Classical model shows superior seed stability (mean 0.5231 vs 0.3478 Mb/J) and 39x faster execution.
+- Quantum model exhibits 94.5% parameter compactness (773 vs 14,149 trainable parameters).
 
 WHAT IS MOCKED
 - None for execution on Linux/GPU (local Windows environment retains `mock_torchquantum` strictly for lightweight offline testing)
 
 WHAT IS UNKNOWN
-- Direct quantitative performance margin between Classical DDPG vs. Quantum DDPG on identical environment episodes
-- Scalability to 10–30 vehicles in high-density traffic scenarios
+- Whether scheduled noise decay completely eliminates seed variance in quantum model
+- Impact of quantum parameter compactness on communication payload during large-scale federated rounds (e.g. 30 vehicles)
 
 CURRENT BLOCKERS
-- None. Stage 8 is successfully completed.
+- None. Stage 9 is successfully completed.
 
 NEXT 3 ACTIONS
-1. Classical DDPG Benchmark Training (Stage 9) to measure exact quantum performance delta.
-2. Exploration noise decay tuning to mitigate seed variance (e.g. Seed 2026).
-3. Multi-vehicle highway federated integration (Stage 10).
+1. Scheduled exploration noise tuning (Stage 10 Part 1).
+2. Multi-vehicle highway federated scale-up (Stage 10 Part 2).
+3. Final publication-grade comparative synthesis.
